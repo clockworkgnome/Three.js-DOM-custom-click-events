@@ -1,0 +1,45 @@
+//*********************************************************************
+//this is code to handle window resizing
+//*********************************************************************
+ window.addEventListener('resize', function() {
+      var WIDTH = window.innerWidth,
+          HEIGHT = window.innerHeight;
+      renderer.setSize(WIDTH, HEIGHT);
+      camera.aspect = WIDTH / HEIGHT;
+      camera.updateProjectionMatrix();
+    });
+
+//**************************************************************************************************************
+//This is code for a mouse down event
+//**************************************************************************************************************
+var mouse = new THREE.Vector2();
+raycaster = new THREE.Raycaster();
+document.addEventListener( 'click', onDocumentMouseMove, false );
+function onDocumentMouseMove( event ) {
+
+	event.preventDefault();
+
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+	// find intersections
+
+	raycaster.setFromCamera( mouse, camera );
+
+	var intersects = raycaster.intersectObjects( scene.children );
+	
+
+	if( intersects.length > 0 ){// if an object was clicked
+		var intersect	= intersects[ 0 ];
+		var newSelected	= intersect.object;
+		console.log('you clicked on mesh', newSelected)
+
+		if(newSelected.name=='yourMeshName'){
+			newSelected.rotation.z = -1.57;
+		}
+	}else{
+		console.log('you clicked nothing')
+	}
+
+
+}
